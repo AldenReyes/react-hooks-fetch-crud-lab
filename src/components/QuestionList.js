@@ -27,6 +27,20 @@ function QuestionList() {
       .then(() => handleDeleteItem(id));
   }
 
+  function passChangeToState(value, id) {
+    console.log(value, id);
+    setQuestions(
+      questions.map((question) => {
+        if (question.id !== id) {
+          return question;
+        } else {
+          question.correctIndex = parseInt(value);
+          return question;
+        }
+      })
+    );
+  }
+
   return (
     <section>
       <h1>Quiz Questions</h1>
@@ -37,6 +51,7 @@ function QuestionList() {
               key={question.id}
               question={question}
               onDeleteClick={handleDelete}
+              onHandleChange={passChangeToState}
             />
           );
         })}
