@@ -10,16 +10,35 @@ function QuestionList() {
       .then((questionsData) => setQuestions(questionsData));
   }, []);
 
-  // const handleAddQuestion(question) {
-  //   setQuestions(...questions, question)
-  // }
+  function handleDeleteItem(id) {
+    setQuestions(
+      questions.filter((question) => {
+        return question.id !== id;
+      })
+    );
+  }
+
+  function handleDelete(id) {
+    fetch(`http://localhost:4000/questions/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then(() => handleDeleteItem(id));
+  }
 
   return (
     <section>
       <h1>Quiz Questions</h1>
       <ul>
         {questions.map((question) => {
-          return <QuestionItem key={question.id} question={question} />;
+          return (
+            <QuestionItem
+              key={question.id}
+              question={question}
+              onDeleteClick={handleDelete}
+            />
+          );
         })}
       </ul>
     </section>
